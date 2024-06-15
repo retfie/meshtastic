@@ -105,6 +105,7 @@ static const uint8_t MISO = PIN_SPI_MISO;
 static const uint8_t SCK = PIN_SPI_SCK;
 
 // supported modules list
+#define USE_RF95        // Probe 1st for RF95 and if not found then try SX1262
 #define USE_SX1262
 
 // common pinouts for SX126X modules
@@ -112,6 +113,14 @@ static const uint8_t SCK = PIN_SPI_SCK;
 #define SX126X_DIO1 D1
 #define SX126X_BUSY D2
 #define SX126X_RESET D3
+
+#ifdef USE_RF95
+#define LORA_CS SX126X_CS
+// LORA_xxx and RF95_xxx defined into src/RF95Configuration.h
+#define LORA_DIO0 SX126X_DIO1        // IRQ  - D1
+#define LORA_DIO1 SX126X_BUSY        // BUSY - D2
+#define LORA_RESET SX126X_RESET      // RST  - D3
+#endif
 
 // ----------------------------------------------------------------
 
