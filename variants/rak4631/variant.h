@@ -109,9 +109,18 @@ static const uint8_t AREF = PIN_AREF;
  */
 #define SPI_INTERFACES_COUNT 2
 
+#define USE_PCA10059
+
+#ifdef USE_PCA10059
+#define PIN_SPI_MISO (42)
+#define PIN_SPI_MOSI (47)
+#define PIN_SPI_SCK (45)
+#else
 #define PIN_SPI_MISO (45)
 #define PIN_SPI_MOSI (44)
 #define PIN_SPI_SCK (43)
+#endif
+
 
 #define PIN_SPI1_MISO (29) // (0 + 29)
 #define PIN_SPI1_MOSI (30) // (0 + 30)
@@ -143,8 +152,17 @@ static const uint8_t SCK = PIN_SPI_SCK;
  */
 #define WIRE_INTERFACES_COUNT 1
 
+#ifdef USE_PCA10059
+
+#define PIN_WIRE_SDA (4)
+#define PIN_WIRE_SCL (26)
+
+#else
+
 #define PIN_WIRE_SDA (13)
 #define PIN_WIRE_SCL (14)
+
+#endif
 
 // QSPI Pins
 #define PIN_QSPI_SCK 3
@@ -199,7 +217,20 @@ SO GPIO 39/TXEN MAY NOT BE DEFINED FOR SUCCESSFUL OPERATION OF THE SX1262 - TG
 
 #define DETECTION_SENSOR_EN 4
 
-#define USE_SX1262
+#ifdef USE_PCA10059
+
+#define USE_RF95        // Probe 1st for RF95 and if not found then try SX1262
+#define LORA_CS (2)
+// LORA_xxx and RF95_xxx defined into src/RF95Configuration.h
+#define LORA_DIO0 (13)  // IRQ
+#define LORA_DIO1 (17)  // BUSY
+#define LORA_RESET (29) // RST
+
+#define HAS_GPS 0
+
+#else
+
+//#define USE_SX1262
 #define SX126X_CS (42)
 #define SX126X_DIO1 (47)
 #define SX126X_BUSY (46)
@@ -210,6 +241,8 @@ SO GPIO 39/TXEN MAY NOT BE DEFINED FOR SUCCESSFUL OPERATION OF THE SX1262 - TG
 // DIO2 controlls an antenna switch and the TCXO voltage is controlled by DIO3
 #define SX126X_DIO2_AS_RF_SWITCH
 #define SX126X_DIO3_TCXO_VOLTAGE 1.8
+
+#endif
 
 // Testing USB detection
 #define NRF_APM
